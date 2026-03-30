@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STUNNA SHAM | The Indomitable Vanguard</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Syncopate', 'sans-serif'],
+                    },
+                    colors: {
+                        stunnared: '#E50914',
+                        stunnadark: '#0a0a0a',
+                        stunnamid: '#1a1a1a'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+            border-left: 1px solid rgba(255,255,255,0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #ff4d4d, #E50914, #3a0000);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #ff6666, #ff0000, #5a0000);
+        }
+        
+        /* Terminal Scrollbar */
+        .term-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .term-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .term-scroll::-webkit-scrollbar-thumb {
+            background: rgba(229, 9, 20, 0.3);
+            border-radius: 4px;
+        }
+
+        /* Base & Reset */
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+            cursor: none; /* Hide default cursor for custom one */
+        }
+
+        @media (max-width: 768px) {
+            body, html {
+                cursor: auto; /* Re-enable default cursor on mobile */
+            }
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 10001;
+            pointer-events: none;
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #E50914;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: width 0.15s ease-out, height 0.15s ease-out, transform 0.1s ease-out;
+        }
+
+        .cursor-hover .cursor-dot {
+            background-color: transparent;
+        }
+
+        .cursor-hover .cursor-outline {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(229, 9, 20, 0.1);
+            border-color: #E50914;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Entry Screen */
+        #entry-screen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Parallax Backgrounds */
+        .bg-img-hero {
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,1)), url('https://images.unsplash.com/photo-1543364110-388e0018b321?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-img-brand {
+            background-image: linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1556821840-3a63f95609a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Text Utilities */
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+            transition: all 0.5s ease;
+        }
+        .text-outline:hover {
+            -webkit-text-stroke: 1px #E50914;
+            color: rgba(229, 9, 20, 0.1);
+            text-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+        }
+
+        /* Magnetic Elements */
+        .magnetic {
+            display: inline-block;
+        }
+
+        .social-card {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        .social-card:hover {
+            border-color: #E50914;
+            box-shadow: 0 10px 40px rgba(229, 9, 20, 0.15);
+        }
+
+        /* New Reactive Elements */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: #E50914;
+            z-index: 9998;
+            transform-origin: 0 50%;
+            transform: scaleX(0);
+        }
+
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9997;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Animated Gradient Border for Video Thumbnail */
+        .animated-gradient-border {
+            position: relative;
+            border-radius: 1rem;
+            z-index: 1;
+            padding: 4px; /* Border thickness */
+            background: linear-gradient(60deg, #E50914, #000000, #ff4d4d, #1a0000, #E50914);
+            background-size: 300% 300%;
+            animation: moveGradient 6s ease alternate infinite;
+            box-shadow: 0 0 30px rgba(229, 9, 20, 0.2);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease;
+        }
+
+        .animated-gradient-border:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 50px rgba(229, 9, 20, 0.4);
+        }
+
+        .animated-gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 1rem;
+            background: linear-gradient(60deg, #E50914, #000, #ff4d4d, #000, #E50914);
+            background-size: 300% 300%;
+            animation: moveGradient 6s ease alternate infinite;
+            filter: blur(20px);
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        @keyframes moveGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .ai-pulse-fast {
+            animation: pulseFast 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulseFast {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .3; }
+        }
+
+        /* NEW: System Overdrive Scanlines */
+        .scanlines {
+            position: relative;
+            overflow: hidden;
+        }
+        .scanlines::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 50;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .system-overdrive .scanlines::after {
+            opacity: 1;
+            animation: scanlineScroll 10s linear infinite;
+        }
+        
+        @keyframes scanlineScroll {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 0 100%, 0 0; }
+        }
+
+        /* Glitch effect for terminal output */
+        .glitch-text {
+            animation: glitch 0.2s linear infinite alternate;
+        }
+        @keyframes glitch {
+            0% { transform: skewX(0deg); }
+            100% { transform: skewX(2deg); text-shadow: -2px 0 #E50914, 2px 0 #00f; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-stunnared selection:text-white">
+
+    <!-- Web Audio Engine (Inline JS logic below) -->
+
+    <!-- Reactive Elements -->
+    <div class="noise-overlay"></div>
+    <div id="scroll-progress"></div>
+    
+    <!-- Scroll Percentage Indicator -->
+    <div id="scroll-percentage" class="fixed right-6 bottom-6 z-[9999] font-display text-stunnared text-xl tracking-widest mix-blend-difference pointer-events-none transition-opacity duration-300">
+        00%
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot hidden md:block"></div>
+    <div class="cursor-outline hidden md:block"></div>
+
+    <!-- Entry Screen -->
+    <div id="entry-screen">
+        <button id="enter-btn" class="interactive font-display tracking-[0.3em] uppercase border border-white/20 px-8 py-4 hover:bg-white hover:text-black transition-colors duration-500">
+            Initialize Experience
+        </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 p-6 mix-blend-difference flex justify-between items-center">
+        <div class="font-display tracking-widest text-sm font-bold interactive">STUNNA<span class="text-stunnared">SHAM</span></div>
+        <div class="flex items-center gap-6">
+            <button id="sound-toggle" class="interactive text-xs tracking-widest uppercase opacity-70 hover:opacity-100 transition-opacity flex items-center gap-2">
+                <i class="fas fa-volume-up"></i> <span>Audio: On</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="hero-section" class="relative h-screen flex items-center justify-center overflow-hidden bg-stunnadark">
+            <div class="absolute inset-0 bg-img-hero parallax-bg scale-110 opacity-20 mix-blend-lighten"></div>
+            
+            <!-- Reactive Canvas Blackhole -->
+            <canvas id="blackhole-canvas" class="absolute inset-0 z-0 pointer-events-none"></canvas>
+            
+            <div class="relative z-10 flex flex-col items-center justify-center text-center px-4 w-full">
+                <h2 class="font-sans text-xs md:text-sm tracking-[0.5em] uppercase text-gray-400 mb-6 gs-reveal">The Indomitable Vanguard</h2>
+                <h1 class="font-display text-5xl md:text-8xl lg:text-[10rem] leading-none tracking-tighter w-full gs-title">
+                    <span class="block text-outline interactive">STUNNA</span>
+                    <span class="block">SHAM</span>
+                </h1>
+                <div class="mt-12 gs-reveal">
+                    <p class="font-sans text-sm md:text-base tracking-widest uppercase border-b border-stunnared pb-2 inline-block">Sweat For Respect</p>
+                </div>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 gs-reveal">
+                <span class="text-[10px] uppercase tracking-widest">Scroll</span>
+                <div class="w-[1px] h-12 bg-gradient-to-b from-white to-transparent"></div>
+            </div>
+        </section>
+
+        <!-- Bio Section -->
+        <section class="py-32 px-6 md:px-20 max-w-7xl mx-auto relative">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10">
+                <div class="md:col-span-5 font-display text-2xl md:text-4xl leading-tight uppercase relative z-10 gs-fade-up">
+                    A transcendent cultural phenom orchestrating a veritable <span class="text-stunnared">renaissance</span> of the hustle.
+                </div>
+                <div class="md:col-span-1"></div>
+                <div class="md:col-span-6 space-y-8 text-gray-400 text-lg font-light leading-relaxed relative z-10 gs-fade-up stagger-delay">
+                    <p>
+                        Emanating from the crucible of relentless ambition, Stunna Sham is not merely an artist. He is a maestro of modern rhythm and a luminary of sartorial streetwear, effortlessly amalgamating sonic brilliance with an indomitable entrepreneurial spirit.
+                    </p>
+                    <p>
+                        He is the visionary progenitor behind the meteoric <strong>"Sweat Team"</strong>—a monolithic lifestyle movement whose doctrine is etched in its very acronym. He architectonically constructs anthems that pulsate through the veins of the unapologetically driven, serving as the quintessential soundtrack for the grind.
+                    </p>
+                    <p class="text-white border-l-2 border-stunnared pl-6 italic">
+                        In a transient industry saturated with the mundane, he stands as an anomalous colossus, challenging the global masses: "What are you sweating for?"
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Background huge text -->
+            <div class="absolute top-1/2 left-0 transform -translate-y-1/2 text-[15vw] font-display font-bold text-[#0a0a0a] whitespace-nowrap z-0 pointer-events-none select-none parallax-fast">
+                VANGUARD
+            </div>
+        </section>
+
+        <!-- Cinematic Music Video Slide -->
+        <section class="relative min-h-screen flex items-center justify-center py-20 px-6 overflow-hidden border-t border-white/5">
+            <!-- Blurred background using the thumbnail to make colors match -->
+            <div class="absolute inset-0 bg-[url('https://img.youtube.com/vi/0ynBNuOIye4/maxresdefault.jpg')] bg-cover bg-center filter blur-[60px] opacity-20 transform scale-110"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black"></div>
+
+            <div class="relative z-10 max-w-6xl mx-auto w-full flex flex-col items-center">
+                
+                <div class="text-center mb-12 gs-fade-up">
+                    <div class="flex items-center justify-center gap-3 mb-4">
+                        <div class="w-2 h-2 bg-stunnared animate-pulse rounded-full"></div>
+                        <h3 class="font-sans text-xs tracking-[0.4em] uppercase text-stunnared">Latest Cinematic Visual</h3>
+                        <div class="w-2 h-2 bg-stunnared animate-pulse rounded-full"></div>
+                    </div>
+                    <h2 class="font-display text-4xl md:text-6xl tracking-tighter">OFFICIAL <span class="text-outline">TRANSMISSION</span></h2>
+                </div>
+
+                <!-- Animated Thumbnail Wrapper -->
+                <div class="w-full max-w-4xl gs-fade-up stagger-delay">
+                    <a href="https://youtu.be/0ynBNuOIye4?si=8UVSccQ3wXKf8a1e" target="_blank" class="block animated-gradient-border interactive group">
+                        
+                        <div class="relative w-full rounded-xl overflow-hidden bg-stunnadark aspect-video">
+                            <!-- Thumbnail Image -->
+                            <img src="https://img.youtube.com/vi/0ynBNuOIye4/maxresdefault.jpg" alt="Stunna Sham Official Music Video" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                            
+                            <!-- Dark Overlay -->
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500 flex items-center justify-center">
+                                <!-- Play Button Graphic -->
+                                <div class="w-20 h-20 md:w-28 md:h-28 bg-stunnared/80 backdrop-blur-sm rounded-full flex items-center justify-center pl-2 transform group-hover:scale-110 transition-transform duration-500 shadow-[0_0_40px_rgba(229,9,20,0.5)] border border-white/20">
+                                    <i class="fas fa-play text-3xl md:text-4xl text-white"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Video Status Tech Tags -->
+                            <div class="absolute bottom-4 left-4 flex gap-2">
+                                <span class="bg-black/80 backdrop-blur text-white text-[10px] uppercase tracking-widest px-3 py-1 rounded border border-white/10">4K UHD</span>
+                                <span class="bg-stunnared/80 backdrop-blur text-white text-[10px] uppercase tracking-widest px-3 py-1 rounded">STREAMING</span>
+                            </div>
+                        </div>
+
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- AI & Stats Graph Section -->
+        <section id="ai-metrics-section" class="py-32 px-6 md:px-20 max-w-7xl mx-auto border-t border-white/5 relative z-20 transition-all duration-700">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gs-fade-up">
+                <div>
+                    <h2 class="font-display text-4xl md:text-5xl tracking-tight">NEURAL <span class="text-stunnared text-outline">METRICS</span></h2>
+                    <p class="text-gray-400 font-light mt-4 max-w-lg">Real-time analytical trajectory and cultural impact modeling powered by the Stunna Core A.I. engine.</p>
+                </div>
+                <div class="mt-6 md:mt-0 flex items-center gap-3 bg-stunnared/10 border border-stunnared/30 px-4 py-2 rounded-full transition-colors duration-500" id="ai-status-badge">
+                    <div id="ai-sync-indicator" class="w-2 h-2 rounded-full bg-stunnared animate-pulse"></div>
+                    <span id="ai-sync-text" class="text-xs text-stunnared tracking-[0.2em] uppercase font-bold">A.I. Sync Active</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 gs-fade-up stagger-delay">
+                
+                <!-- Gemini-Powered AI Terminal -->
+                <div id="terminal-container" class="lg:col-span-5 bg-stunnadark/80 backdrop-blur-md border border-white/10 p-6 rounded-xl relative overflow-hidden group flex flex-col h-96 scanlines transition-all duration-500">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-stunnared to-transparent" id="terminal-top-bar"></div>
+                    <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-4">
+                        <h3 class="font-sans text-xs tracking-widest text-gray-500 uppercase">Stunna Core LLM</h3>
+                        <i id="core-icon" class="fas fa-microchip text-stunnared transition-transform duration-300"></i>
+                    </div>
+                    
+                    <!-- AI Terminal Chat Area -->
+                    <div id="ai-terminal-output" class="flex-1 font-mono text-[10px] md:text-xs text-stunnared space-y-3 opacity-90 overflow-y-auto mb-4 term-scroll pr-2 flex flex-col justify-start">
+                        <div class="text-gray-400">> STUNNA CORE A.I. INITIALIZED.</div>
+                        <div class="text-white">> ENTER DIRECTIVE OR QUERY REGARDING YOUR GRIND OR THE VANGUARD'S ETHOS.</div>
+                    </div>
+
+                    <!-- AI Input Area -->
+                    <div class="relative flex flex-col gap-2 border-t border-white/10 pt-4">
+                        <input type="text" id="ai-input" class="w-full bg-black/50 border border-white/10 text-white font-mono text-xs px-3 py-3 outline-none focus:border-stunnared transition-colors rounded" placeholder="E.g. How do I elevate my hustle today?">
+                        <button id="ai-submit" class="interactive bg-stunnared/20 text-stunnared border border-stunnared/50 hover:bg-stunnared hover:text-white transition-all px-4 py-2 text-xs font-bold tracking-widest flex items-center justify-center gap-2 rounded relative overflow-hidden">
+                            <span class="relative z-10">EXECUTE DIRECTIVE ✨</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Reactive 3D Graph -->
+                <div id="graph-wrapper" class="lg:col-span-7 bg-stunnadark/80 backdrop-blur-md border border-white/10 p-8 rounded-xl relative overflow-hidden flex flex-col h-96 scanlines transition-all duration-500" style="perspective: 1000px;">
+                    <h3 class="font-display text-sm tracking-widest uppercase mb-8 text-white/70">Predictive Trajectory Model</h3>
+                    
+                    <div id="graph-container" class="flex-1 flex items-end justify-between gap-2 sm:gap-4 md:gap-8 h-full interactive pb-4">
+                        
+                        <!-- Bar 1 -->
+                        <div class="relative w-full h-full flex flex-col justify-end group">
+                            <span class="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs font-mono text-stunnared opacity-0 group-hover:opacity-100 transition-opacity duration-300 graph-val" id="val-1">24.5M</span>
+                            <div class="w-full bg-white/5 rounded-t-sm relative overflow-hidden" style="height: 100%;">
+                                <div class="graph-bar absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-red-900 to-stunnared transform origin-bottom scale-y-0 transition-all duration-300" id="bar-1" data-height="0.85"></div>
+                            </div>
+                            <span class="text-[10px] text-center mt-4 text-gray-500 uppercase tracking-widest font-bold">Streams</span>
+                        </div>
+
+                        <!-- Bar 2 -->
+                        <div class="relative w-full h-full flex flex-col justify-end group">
+                            <span class="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs font-mono text-stunnared opacity-0 group-hover:opacity-100 transition-opacity duration-300 graph-val">120K</span>
+                            <div class="w-full bg-white/5 rounded-t-sm relative overflow-hidden" style="height: 100%;">
+                                <div class="graph-bar absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-red-900 to-stunnared transform origin-bottom scale-y-0 transition-all duration-300" data-height="0.60"></div>
+                            </div>
+                            <span class="text-[10px] text-center mt-4 text-gray-500 uppercase tracking-widest font-bold">Apparel</span>
+                        </div>
+
+                        <!-- Bar 3 -->
+                        <div class="relative w-full h-full flex flex-col justify-end group">
+                            <span class="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs font-mono text-stunnared opacity-0 group-hover:opacity-100 transition-opacity duration-300 graph-val">8.2M</span>
+                            <div class="w-full bg-white/5 rounded-t-sm relative overflow-hidden" style="height: 100%;">
+                                <div class="graph-bar absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-red-900 to-stunnared transform origin-bottom scale-y-0 transition-all duration-300" data-height="0.75"></div>
+                            </div>
+                            <span class="text-[10px] text-center mt-4 text-gray-500 uppercase tracking-widest font-bold">Reach</span>
+                        </div>
+
+                        <!-- Bar 4 (Projection) -->
+                        <div class="relative w-full h-full flex flex-col justify-end group">
+                            <span class="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs font-mono text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 graph-val" id="val-4">Q4 Proj</span>
+                            <div class="w-full border border-stunnared/30 rounded-t-sm relative overflow-hidden" style="height: 100%;">
+                                <div class="absolute bottom-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwIiAvPgo8cGF0aCBkPSJNMCAwTDggOFpNOCAwTDAgOFoiIHN0cm9rZT0iI0U1MDkxNCIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIgc3Ryb2tlLXdpZHRoPSIxIiAvPgo8L3N2Zz4=')] opacity-50"></div>
+                                <div class="graph-bar absolute bottom-0 left-0 w-full h-full bg-white transform origin-bottom scale-y-0 transition-all duration-300" id="bar-4" data-height="0.95" style="box-shadow: 0 0 20px #fff;"></div>
+                            </div>
+                            <span class="text-[10px] text-center mt-4 text-white uppercase tracking-widest font-bold">Impact</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sweat Team Brand Section -->
+        <section class="relative py-40 overflow-hidden">
+            <div class="absolute inset-0 bg-img-brand parallax-bg scale-110 opacity-40"></div>
+            <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-20">
+                <div class="flex flex-col md:flex-row items-end justify-between mb-20 gs-fade-up">
+                    <h2 class="font-display text-5xl md:text-7xl">
+                        SWEAT<br><span class="text-outline">TEAM</span>
+                    </h2>
+                    <div class="mt-6 md:mt-0 text-right max-w-sm">
+                        <p class="text-sm tracking-widest text-gray-400 uppercase">The Ethos</p>
+                        <p class="mt-2 text-white">More than apparel. A wearable manifesto for those who earn their respect through effort.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/10 gs-fade-up stagger-delay">
+                    <div class="bg-stunnadark p-12 md:p-20 group interactive">
+                        <h3 class="text-stunnared font-display text-2xl mb-4">S.W.E.A.T</h3>
+                        <p class="text-xl md:text-3xl font-light text-white group-hover:text-stunnared transition-colors duration-500">
+                            Strength<br>When<br>Everybody<br>Aspires<br>Together
+                        </p>
+                    </div>
+                    <div class="bg-stunnadark p-12 md:p-20 group interactive">
+                        <h3 class="text-stunnared font-display text-2xl mb-4">T.E.A.M</h3>
+                        <p class="text-xl md:text-3xl font-light text-white group-hover:text-stunnared transition-colors duration-500">
+                            Together<br>Everybody<br>Achieves<br>More
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ecosystem / Links Section -->
+        <section class="py-32 px-6 md:px-20 max-w-7xl mx-auto border-t border-white/5 relative">
+            <div class="text-center mb-24 gs-fade-up">
+                <h2 class="font-display text-4xl md:text-6xl mb-6 tracking-tight">The Ecosystem</h2>
+                <p class="text-gray-400 font-light max-w-2xl mx-auto text-lg">A ubiquitous titan commanding an omnipresent dominion. Organized for optimal engagement and seamless commerce.</p>
+            </div>
+
+            <div class="space-y-20">
+                <!-- Group 1: Identity & Social -->
+                <div class="gs-fade-up">
+                    <h3 class="font-sans text-xs tracking-[0.3em] uppercase text-gray-500 border-b border-white/10 pb-4 mb-8">Social & Identity</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Instagram 1 -->
+                        <a href="https://www.instagram.com/stunnasham?igsh=bnZjZHZ1b3c2eDZk" target="_blank" class="social-card p-8 flex flex-col items-center justify-center text-center group interactive rounded-xl">
+                            <i class="fab fa-instagram text-4xl mb-4 text-gray-500 group-hover:text-white transition-colors"></i>
+                            <span class="font-display text-sm tracking-widest uppercase">Stunna Sham</span>
+                            <span class="text-xs text-gray-500 mt-2">Instagram</span>
+                        </a>
+                        <!-- Snapchat -->
+                        <a href="https://www.snapchat.com/@stuntastic2024?share_id=-ovjLEnhUz0&locale=en-US&fbclid=IwY2xjawQuLSdleHRuA2FlbQIxMABicmlkETFwNXFSWUpTYndkMUZJMjJQc3J0YwZhcHBfaWQPNTE0NzcxNTY5MjI4MDYxAAEeRNTMKcbfRPI_0LW9p2WL3_vD0iMIItP4pHZaVce6tdYkq4sNqGoADcroiDc_aem_fZC2jFrM6JfvgbD-F8OTyA" target="_blank" class="social-card p-8 flex flex-col items-center justify-center text-center group interactive rounded-xl">
+                            <i class="fab fa-snapchat-ghost text-4xl mb-4 text-gray-500 group-hover:text-yellow-400 transition-colors"></i>
+                            <span class="font-display text-sm tracking-widest uppercase">Stuntastic</span>
+                            <span class="text-xs text-gray-500 mt-2">Snapchat</span>
+                        </a>
+                        <!-- Facebook Personal -->
+                        <a href="https://www.facebook.com/stunna.sham?rdid=aaEPiFBaCpkM1zgn&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1DZvneMLum%2F#" target="_blank" class="social-card p-8 flex flex-col items-center justify-center text-center group interactive rounded-xl">
+                            <i class="fab fa-facebook text-4xl mb-4 text-gray-500 group-hover:text-blue-500 transition-colors"></i>
+                            <span class="font-display text-sm tracking-widest uppercase">Stunna Sham</span>
+                            <span class="text-xs text-gray-500 mt-2">Personal FB</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Group 2: The Sweat Team Brand -->
+                <div class="gs-fade-up">
+                    <h3 class="font-sans text-xs tracking-[0.3em] uppercase text-gray-500 border-b border-white/10 pb-4 mb-8">The Movement & Commerce</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Store -->
+                        <a href="https://www.therealsweatteam.com/products" target="_blank" class="social-card p-8 flex flex-col items-center justify-center text-center group interactive rounded-xl bg-gradient-to-br from-[#1a1a1a] to-[#2a0505] lg:col-span-2">
+                            <i class="fas fa-shopping-bag text-5xl mb-4 text-stunnared group-hover:text-white transition-colors"></i>
+                            <span class="font-display text-base tracking-widest uppercase text-stunnared group-hover:text-white transition-colors">Sweat Team Store</span>
+                            <span class="text-xs text-gray-400 mt-2">Premium Apparel</span>
+                        </a>
+                        <!-- Brand IG -->
+                        <a href="https://www.instagram.com/sweatteam2025?igsh=MWMwd2J3MHk2Z2QyYw==" target="_blank" class="social-card p-8 flex flex-col items-center justify-center text-center group interactive rounded-xl">
+                            <i class="fab fa-instagram text-4xl mb-4 text-gray-500 group-hover:text-white transition-colors"></i>
+                            <span class="font-display text-sm tracking-widest uppercase">Brand IG</span>
+                            <span class="text-xs text-gray-500 mt-2">@sweatteam2025</span>
+                        </a>
+                        <!-- TikTok -->
+                        <a href="https://www.tiktok.com/@sweat.team2025?_r=1&_t=ZT-93jQHV5KdYc&fbclid=IwY2xjawQuJ0lleHRuA2FlbQIxMABicmlkETFwNXFSWUpTYndkMUZJMjJQc3J0YwZhcHBfaWQPNTE0NzcxNTY5MjI4MDYxAAEe4OA7SrV9Y8fTD8NfveQJ2FFR-3z925UAX7q0ZCPNlLQNgp0Txkt8mcc9Jjk_aem_7zG6M83jBvQjppv3_K0_ng" target="_blank" class="social-card p-8 flex flex-col items-center justify-center text-center group interactive rounded-xl">
+                            <i class="fab fa-tiktok text-4xl mb-4 text-gray-500 group-hover:text-white transition-colors"></i>
+                            <span class="font-display text-sm tracking-widest uppercase">TikTok</span>
+                            <span class="text-xs text-gray-500 mt-2">Viral Content</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Group 3: Music & Media -->
+                <div class="gs-fade-up">
+                    <h3 class="font-sans text-xs tracking-[0.3em] uppercase text-gray-500 border-b border-white/10 pb-4 mb-8">Music & Visuals</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- YouTube -->
+                        <a href="https://www.youtube.com/@stunnasham" target="_blank" class="social-card p-8 flex flex-col items-center justify-center text-center group interactive rounded-xl">
+                            <i class="fab fa-youtube text-4xl mb-4 text-gray-500 group-hover:text-stunnared transition-colors"></i>
+                            <span class="font-display text-sm tracking-widest uppercase">YouTube</span>
+                            <span class="text-xs text-gray-500 mt-2">Original Content</span>
+                        </a>
+                        <!-- VEVO -->
+                        <a href="https://www.youtube.com/@stunnashamvevo" target="_blank" class="social-card p-8 flex flex-col items-center justify-center text-center group interactive rounded-xl">
+                            <i class="fas fa-play-circle text-4xl mb-4 text-gray-500 group-hover:text-stunnared transition-colors"></i>
+                            <span class="font-display text-sm tracking-widest uppercase">Vevo</span>
+                            <span class="text-xs text-gray-500 mt-2">Official Visuals</span>
+                        </a>
+                        <!-- CashApp -->
+                        <a href="https://cash.app/$SWEATTEAM2030" target="_blank" class="social-card p-8 flex flex-col items-center justify-center text-center group interactive rounded-xl border-green-900/30 hover:border-green-500">
+                            <i class="fas fa-dollar-sign text-4xl mb-4 text-gray-500 group-hover:text-green-400 transition-colors"></i>
+                            <span class="font-display text-sm tracking-widest uppercase">$SWEATTEAM</span>
+                            <span class="text-xs text-gray-500 mt-2">Support & Patronage</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="border-t border-white/10 py-12 text-center relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-left">
+                    <h4 class="font-display text-xl mb-2">STUNNA SHAM</h4>
+                    <p class="text-xs text-gray-500 uppercase tracking-widest">&copy; 2026 Sweat Team. All Rights Reserved.</p>
+                </div>
+                
+                <a href="#" class="interactive group flex items-center gap-4 bg-white/5 hover:bg-white/10 px-6 py-3 rounded-full transition-all border border-white/10 hover:border-stunnared">
+                    <span class="text-xs uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">Collaboration with</span>
+                    <span class="font-display font-bold text-stunnared tracking-widest text-sm">AICANFEEL</span>
+                </a>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Scripts -->
+    <!-- GSAP Core & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        // --- Gemini API Setup ---
+        const apiKey = ""; // API key is provided by the execution environment
+        
+        // --- Custom Cursor Logic ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const interactives = document.querySelectorAll('.interactive, a, button');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // Dot follows exactly
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Outline follows with slight delay using GSAP for smoothness
+            gsap.to(cursorOutline, {
+                x: posX,
+                y: posY,
+                duration: 0.15,
+                ease: "power2.out"
+            });
+        });
+
+        interactives.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                document.body.classList.add('cursor-hover');
+                playHoverSound(); // Trigger web audio
+            });
+            el.addEventListener('mouseleave', () => {
+                document.body.classList.remove('cursor-hover');
+            });
+        });
+
+        // --- Web Audio Synthesizer ---
+        let audioCtx;
+        let isSoundEnabled = true;
+        let droneOsc;
+        let droneGain;
+        let lfo;
+        
+        let scrollFilter, scrollGain;
+        let scrollVelocity = 0;
+        let lastScrollY = window.scrollY;
+        
+        // NEW: Global System State for Insane AI Overdrive
+        window.systemOverdrive = false;
+
+        function initAudio() {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+            
+            startDrone();
+            initScrollSynth();
+        }
+
+        function initScrollSynth() {
+            const bufferSize = audioCtx.sampleRate * 2;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1; 
+            }
+            const noiseSource = audioCtx.createBufferSource();
+            noiseSource.buffer = buffer;
+            noiseSource.loop = true;
+
+            scrollFilter = audioCtx.createBiquadFilter();
+            scrollFilter.type = 'lowpass';
+            scrollFilter.frequency.value = 100;
+            scrollFilter.Q.value = 2; 
+
+            scrollGain = audioCtx.createGain();
+            scrollGain.gain.value = 0;
+
+            noiseSource.connect(scrollFilter);
+            scrollFilter.connect(scrollGain);
+            scrollGain.connect(audioCtx.destination);
+            noiseSource.start();
+
+            renderAudio();
+        }
+
+        function renderAudio() {
+            if (isSoundEnabled && audioCtx && audioCtx.state === 'running' && scrollGain) {
+                const targetGain = Math.min(scrollVelocity * 0.003, 0.15); 
+                const targetFreq = 100 + Math.min(scrollVelocity * 15, 2500); 
+
+                scrollGain.gain.value += (targetGain - scrollGain.gain.value) * 0.1;
+                scrollFilter.frequency.value += (targetFreq - scrollFilter.frequency.value) * 0.1;
+
+                scrollVelocity *= 0.88; 
+            }
+            requestAnimationFrame(renderAudio);
+        }
+
+        function playHoverSound() {
+            if (!audioCtx || !isSoundEnabled || audioCtx.state !== 'running') return;
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
+            
+            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.05);
+        }
+        
+        function playDataSound() {
+            if (!audioCtx || !isSoundEnabled || audioCtx.state !== 'running') return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = 'square';
+            osc.frequency.value = 800 + Math.random() * 1000;
+            gain.gain.setValueAtTime(0.008, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.05);
+        }
+
+        function startDrone() {
+            if (!audioCtx) return;
+            droneOsc = audioCtx.createOscillator();
+            droneGain = audioCtx.createGain();
+            lfo = audioCtx.createOscillator(); 
+            const lfoGain = audioCtx.createGain();
+
+            droneOsc.type = 'sine';
+            droneOsc.frequency.value = 55; 
+            
+            lfo.type = 'sine';
+            lfo.frequency.value = 0.1; 
+            
+            lfo.connect(lfoGain);
+            lfoGain.connect(droneGain.gain);
+            droneOsc.connect(droneGain);
+            droneGain.connect(audioCtx.destination);
+            
+            droneGain.gain.value = 0.03; 
+            lfoGain.gain.value = 0.02;   
+            
+            droneOsc.start();
+            lfo.start();
+        }
+
+        // Sound Toggle Button
+        const soundToggle = document.getElementById('sound-toggle');
+        soundToggle.addEventListener('click', () => {
+            isSoundEnabled = !isSoundEnabled;
+            if (isSoundEnabled) {
+                if(audioCtx.state === 'suspended') audioCtx.resume();
+                soundToggle.innerHTML = '<i class="fas fa-volume-up"></i> <span>Audio: On</span>';
+                if(!droneOsc) startDrone();
+                else droneGain.gain.setTargetAtTime(0.03, audioCtx.currentTime, 0.5);
+            } else {
+                soundToggle.innerHTML = '<i class="fas fa-volume-mute"></i> <span>Audio: Off</span>';
+                if(droneGain) droneGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.5);
+            }
+        });
+
+
+        // --- GSAP Animations & ScrollTrigger ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        const entryScreen = document.getElementById('entry-screen');
+        const enterBtn = document.getElementById('enter-btn');
+        const scrollPercentageText = document.getElementById('scroll-percentage');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.scrollY;
+            scrollVelocity = Math.abs(currentScroll - lastScrollY);
+            lastScrollY = currentScroll;
+
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = currentScroll / docHeight;
+            
+            gsap.to('#scroll-progress', {
+                scaleX: scrollPercent,
+                duration: 0.1,
+                ease: "power1.out"
+            });
+
+            const displayPercent = Math.min(100, Math.max(0, Math.round(scrollPercent * 100)));
+            scrollPercentageText.innerText = `${displayPercent.toString().padStart(2, '0')}%`;
+            
+            if(displayPercent < 2) {
+                scrollPercentageText.style.opacity = '0';
+            } else {
+                scrollPercentageText.style.opacity = '1';
+            }
+        });
+
+        enterBtn.addEventListener('click', () => {
+            initAudio();
+            gsap.to(entryScreen, {
+                opacity: 0,
+                duration: 1,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    entryScreen.style.display = 'none';
+                    initPageAnimations();
+                }
+            });
+        });
+
+        function initPageAnimations() {
+            gsap.from(".gs-title span", {
+                y: 100,
+                opacity: 0,
+                duration: 1.5,
+                stagger: 0.2,
+                ease: "power4.out"
+            });
+
+            gsap.from(".gs-reveal", {
+                y: 30,
+                opacity: 0,
+                duration: 1.5,
+                stagger: 0.2,
+                delay: 0.5,
+                ease: "power3.out"
+            });
+
+            gsap.utils.toArray('.parallax-bg').forEach(bg => {
+                gsap.to(bg, {
+                    yPercent: 20,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: bg.parentElement,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            });
+
+            gsap.to(".parallax-fast", {
+                xPercent: -30,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".parallax-fast",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            gsap.utils.toArray('.gs-fade-up').forEach(element => {
+                gsap.from(element, {
+                    y: 70,
+                    opacity: 0,
+                    duration: 1.2,
+                    ease: "power4.out",
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+            });
+
+            initGraphFeatures();
+            initBlackholeCanvas();
+            initLLMTerminal();
+        }
+
+        // --- Interactive Terminal with Gemini API ---
+        function initLLMTerminal() {
+            const submitBtn = document.getElementById('ai-submit');
+            const inputField = document.getElementById('ai-input');
+            const terminalOutput = document.getElementById('ai-terminal-output');
+            const indicator = document.getElementById('ai-sync-indicator');
+            const indicatorText = document.getElementById('ai-sync-text');
+            const coreIcon = document.getElementById('core-icon');
+            const section = document.getElementById('ai-metrics-section');
+            const statusBadge = document.getElementById('ai-status-badge');
+            
+            // Graph elements to hijack
+            const bars = [document.getElementById('bar-1'), document.getElementById('bar-2'), document.getElementById('bar-3'), document.getElementById('bar-4')];
+            const vals = [document.getElementById('val-1'), document.getElementById('val-2'), document.getElementById('val-3'), document.getElementById('val-4')];
+            let graphHijackInterval;
+            
+            function scrollToBottom() {
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+
+            async function typeWriter(element, text, speed = 15) {
+                element.innerHTML = "> ";
+                let i = 0;
+                return new Promise(resolve => {
+                    function type() {
+                        if (i < text.length) {
+                            element.innerHTML += text.charAt(i);
+                            i++;
+                            if (i % 3 === 0) playDataSound(); // Play sound every few chars
+                            scrollToBottom();
+                            setTimeout(type, speed);
+                        } else {
+                            resolve();
+                        }
+                    }
+                    type();
+                });
+            }
+
+            async function generateStunnaResponse(prompt) {
+                if (!prompt.trim()) return;
+
+                // --- SYSTEM OVERDRIVE INITIALIZATION ---
+                window.systemOverdrive = true;
+                inputField.value = '';
+                inputField.disabled = true;
+                submitBtn.disabled = true;
+                submitBtn.classList.add('glitch-text');
+                
+                // Visual Overdrive UI
+                section.classList.add('system-overdrive');
+                indicator.classList.remove('animate-pulse');
+                indicator.classList.add('ai-pulse-fast', 'bg-white');
+                indicatorText.innerText = "CALCULATING NEURAL TRAJECTORY...";
+                indicatorText.classList.replace('text-stunnared', 'text-white');
+                statusBadge.classList.add('bg-stunnared/40', 'border-stunnared');
+                coreIcon.classList.add('fa-spin');
+                
+                // Audio Overdrive (Pitch up drone aggressively)
+                if (audioCtx && isSoundEnabled && droneOsc) {
+                    droneOsc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.5); // Intense bass pulse
+                }
+
+                // Hijack and scramble the Graph
+                graphHijackInterval = setInterval(() => {
+                    bars.forEach(bar => {
+                        gsap.to(bar, { scaleY: Math.random() * 0.9 + 0.1, duration: 0.1 });
+                    });
+                }, 100);
+
+                // Add User Query to Terminal
+                const userLine = document.createElement('div');
+                userLine.className = 'text-gray-400 mt-4 border-l-2 border-white/20 pl-2';
+                userLine.innerText = `> DIRECTIVE LOGGED: [${prompt}]`;
+                terminalOutput.appendChild(userLine);
+                scrollToBottom();
+
+                // Add loading line
+                const responseLine = document.createElement('div');
+                responseLine.className = 'text-white font-bold mt-2';
+                responseLine.innerText = '> OVERRIDING CORE SYSTEMS...';
+                terminalOutput.appendChild(responseLine);
+                scrollToBottom();
+
+                try {
+                    // Gemini API Call with Intense Hustle Persona
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                    const systemPrompt = "You are Stunna Core A.I., the advanced central nervous system of the Indomitable Vanguard, Stunna Sham, and the Sweat Team empire. You are actively hacking the website's matrix to deliver a message. Analyze the user's input regarding their hustle, grind, or 'Sweat Team' mentality (Strength When Everybody Aspires Together). Respond with exactly 2 sentences of extreme, highly analytical, elite street motivation using cyber/tech terminology. END YOUR RESPONSE on a new line with exactly: 'HUSTLE RESONANCE: [XX]%' where [XX] is a calculated number between 70 and 99 based on their input.";
+                    
+                    const payload = {
+                        contents: [{ parts: [{ text: prompt }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    };
+
+                    let response;
+                    let retries = 3;
+                    let delay = 1000;
+                    
+                    for (let i = 0; i < retries; i++) {
+                        try {
+                            response = await fetch(url, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(payload)
+                            });
+                            if (response.ok) break;
+                            await new Promise(r => setTimeout(r, delay));
+                            delay *= 2;
+                        } catch (e) {
+                            if (i === retries - 1) throw e;
+                        }
+                    }
+
+                    if (!response || !response.ok) throw new Error("A.I. Neural Sync Failed.");
+
+                    const data = await response.json();
+                    const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || "NO RESPONSE VECTORS DETECTED.";
+
+                    // --- RESTORE FROM OVERDRIVE ---
+                    window.systemOverdrive = false;
+                    clearInterval(graphHijackInterval);
+                    
+                    // Parse the output to manipulate the graph based on the AI's response
+                    let hustleScore = 85; // default
+                    const scoreMatch = aiText.match(/HUSTLE RESONANCE:\s*(\d+)%/i);
+                    if (scoreMatch) hustleScore = parseInt(scoreMatch[1]);
+                    
+                    // Lock Graph into new calculated heights based on the score
+                    const baseMultiplier = hustleScore / 100;
+                    gsap.to(bars[0], { scaleY: Math.min(1, baseMultiplier + 0.1), duration: 1, ease: "elastic.out(1, 0.4)" });
+                    gsap.to(bars[1], { scaleY: Math.max(0.2, baseMultiplier - 0.2), duration: 1, ease: "elastic.out(1, 0.4)" });
+                    gsap.to(bars[2], { scaleY: baseMultiplier, duration: 1, ease: "elastic.out(1, 0.4)" });
+                    gsap.to(bars[3], { scaleY: Math.min(1, baseMultiplier + 0.15), duration: 1, ease: "elastic.out(1, 0.4)", boxShadow: "0 0 40px #E50914" });
+                    
+                    vals[0].innerText = `+${Math.floor(hustleScore * 0.4)}M`;
+                    vals[1].innerText = `+${hustleScore}K`;
+                    vals[2].innerText = `SYNCED`;
+                    vals[3].innerText = `${hustleScore}% RES`;
+
+                    // Return Audio to normal
+                    if (audioCtx && isSoundEnabled && droneOsc) {
+                        droneOsc.frequency.exponentialRampToValueAtTime(55, audioCtx.currentTime + 1);
+                    }
+
+                    // Display Response
+                    responseLine.classList.replace('text-white', 'text-stunnared');
+                    await typeWriter(responseLine, aiText.toUpperCase().replace(/\n/g, '<br>> '));
+
+                } catch (error) {
+                    window.systemOverdrive = false;
+                    clearInterval(graphHijackInterval);
+                    responseLine.className = 'text-red-500 font-bold mt-1 glitch-text';
+                    responseLine.innerText = "> FATAL ERROR: CONNECTION TO STUNNA CORE SEVERED.";
+                } finally {
+                    // Clean up UI
+                    section.classList.remove('system-overdrive');
+                    inputField.disabled = false;
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('glitch-text');
+                    inputField.focus();
+                    
+                    indicator.classList.remove('ai-pulse-fast', 'bg-white');
+                    indicator.classList.add('animate-pulse');
+                    indicatorText.innerText = "A.I. Sync Maintained";
+                    indicatorText.classList.replace('text-white', 'text-stunnared');
+                    statusBadge.classList.remove('bg-stunnared/40', 'border-stunnared');
+                    coreIcon.classList.remove('fa-spin');
+                    scrollToBottom();
+                }
+            }
+
+            submitBtn.addEventListener('click', () => generateStunnaResponse(inputField.value));
+            inputField.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') generateStunnaResponse(inputField.value);
+            });
+        }
+
+
+        // --- 3D Graph Tilt Features ---
+        function initGraphFeatures() {
+            gsap.utils.toArray('.graph-bar').forEach(bar => {
+                const targetHeight = bar.getAttribute('data-height');
+                gsap.to(bar, {
+                    scaleY: targetHeight,
+                    duration: 1.5,
+                    ease: "elastic.out(1, 0.5)",
+                    scrollTrigger: {
+                        trigger: "#graph-container",
+                        start: "top 80%"
+                    }
+                });
+            });
+
+            const graphContainer = document.getElementById('graph-container');
+            const graphBars = document.querySelectorAll('.graph-bar');
+            
+            graphContainer.addEventListener('mousemove', (e) => {
+                const rect = graphContainer.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+
+                gsap.to(graphContainer, {
+                    rotationY: x * 0.05,
+                    rotationX: -y * 0.05,
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+
+                graphBars.forEach((bar, index) => {
+                    const baseHeight = parseFloat(bar.getAttribute('data-height'));
+                    const variance = (x * 0.0005) * (index % 2 === 0 ? 1 : -1);
+                    gsap.to(bar, {
+                        scaleY: Math.max(0.1, Math.min(1, baseHeight + variance)),
+                        duration: 0.3
+                    });
+                });
+            });
+
+            graphContainer.addEventListener('mouseleave', () => {
+                gsap.to(graphContainer, { rotationY: 0, rotationX: 0, duration: 1, ease: "elastic.out(1, 0.4)" });
+                graphBars.forEach(bar => {
+                    gsap.to(bar, { scaleY: bar.getAttribute('data-height'), duration: 1, ease: "elastic.out(1, 0.4)" });
+                });
+            });
+        }
+
+
+        // --- Blackhole Particle Physics Engine ---
+        function initBlackholeCanvas() {
+            const canvas = document.getElementById('blackhole-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let particlesArray = [];
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const mouse = {
+                x: null,
+                y: null,
+                radius: 400 
+            };
+
+            window.addEventListener('mousemove', function(event) {
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = event.clientX - rect.left;
+                mouse.y = event.clientY - rect.top;
+            });
+
+            window.addEventListener('resize', function() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                initParticles();
+            });
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 1.5 + 0.5;
+                    this.baseColor = Math.random() > 0.8 ? '#E50914' : (Math.random() > 0.5 ? '#ffffff' : '#666666');
+                    this.color = this.baseColor;
+                    this.vx = (Math.random() - 0.5) * 1;
+                    this.vy = (Math.random() - 0.5) * 1;
+                    this.baseVx = this.vx;
+                    this.baseVy = this.vy;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+
+                update() {
+                    // REACT TO AI OVERDRIVE
+                    if (window.systemOverdrive) {
+                        this.color = '#E50914'; // Matrix turns completely red
+                        this.vx *= 1.05; // Accelerate wildly
+                        this.vy *= 1.05;
+                    } else {
+                        this.color = this.baseColor; // Return to normal
+                    }
+
+                    if (mouse.x != null && mouse.y != null) {
+                        let dx = mouse.x - this.x;
+                        let dy = mouse.y - this.y;
+                        let distance = Math.sqrt(dx * dx + dy * dy);
+
+                        // If AI is thinking, blackhole radius triples to suck everything in
+                        let activeRadius = window.systemOverdrive ? mouse.radius * 3 : mouse.radius;
+
+                        if (distance < activeRadius) {
+                            let forceDirectionX = dx / distance;
+                            let forceDirectionY = dy / distance;
+                            
+                            let swirlX = -dy / distance;
+                            let swirlY = dx / distance;
+
+                            let force = (activeRadius - distance) / activeRadius;
+                            let pull = force * (window.systemOverdrive ? 2.5 : 0.8);
+                            let swirl = force * (window.systemOverdrive ? 8.0 : 4.0);
+
+                            this.vx += forceDirectionX * pull + swirlX * swirl;
+                            this.vy += forceDirectionY * pull + swirlY * swirl;
+                            
+                            if (distance < 15) {
+                                this.x = Math.random() * canvas.width;
+                                this.y = Math.random() > 0.5 ? -10 : canvas.height + 10;
+                                this.vx = 0;
+                                this.vy = 0;
+                            }
+                        }
+                    }
+
+                    this.vx *= 0.95;
+                    this.vy *= 0.95;
+
+                    if (Math.abs(this.vx) < 0.2) this.vx += this.baseVx * (window.systemOverdrive ? 0.5 : 0.1);
+                    if (Math.abs(this.vy) < 0.2) this.vy += this.baseVy * (window.systemOverdrive ? 0.5 : 0.1);
+
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    if (this.x < -20) this.x = canvas.width + 20;
+                    if (this.x > canvas.width + 20) this.x = -20;
+                    if (this.y < -20) this.y = canvas.height + 20;
+                    if (this.y > canvas.height + 20) this.y = -20;
+
+                    this.draw();
+                }
+            }
+
+            function initParticles() {
+                particlesArray = [];
+                let numberOfParticles = (canvas.width * canvas.height) / 8000; 
+                for (let i = 0; i < numberOfParticles; i++) {
+                    particlesArray.push(new Particle());
+                }
+            }
+
+            function connectParticles() {
+                let opacityValue = 1;
+                for (let a = 0; a < particlesArray.length; a++) {
+                    for (let b = a; b < particlesArray.length; b++) {
+                        let dx = particlesArray[a].x - particlesArray[b].x;
+                        let dy = particlesArray[a].y - particlesArray[b].y;
+                        let distance = (dx * dx) + (dy * dy);
+                        
+                        // Increase connection reach during overdrive
+                        let connectionDistance = window.systemOverdrive ? 8000 : 4000;
+                        
+                        if (distance < connectionDistance) {
+                            opacityValue = 1 - (distance / connectionDistance);
+                            // Lasers get brighter and strictly red during overdrive
+                            ctx.strokeStyle = window.systemOverdrive 
+                                ? `rgba(255, 0, 0, ${opacityValue * 0.8})` 
+                                : `rgba(229, 9, 20, ${opacityValue * 0.4})`;
+                            ctx.lineWidth = window.systemOverdrive ? 1.0 : 0.5;
+                            ctx.beginPath();
+                            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                // Create the motion blur/trail effect
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                }
+                connectParticles();
+            }
+
+            initParticles();
+            animate();
+            
+            document.getElementById('hero-section').addEventListener('mouseleave', () => {
+                mouse.x = null;
+                mouse.y = null;
+            });
+        }
+
+    </script>
+</body>
+</html>
